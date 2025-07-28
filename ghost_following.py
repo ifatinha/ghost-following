@@ -22,8 +22,16 @@ import requests
 
 def get_all_pages(url):
     """
-    Faz múltiplas requisições para coletar todos os dados de uma API paginada
-    do GitHub. Retorna uma lista com todos os usuários.
+    Coleta todos os resultados de uma URL paginada da API do GitHub.
+
+    A API do GitHub retorna no máximo 100 itens por página.
+    Esta função segue os links de paginação (se houver) para obter todos os dados.
+
+    Parâmetros:
+        url (str): A URL inicial da requisição (com `?per_page=100` já incluso).
+
+    Retorna:
+        list: Lista de dicionários representando os usuários retornados pela API.
     """
 
     results = []
@@ -41,8 +49,13 @@ def get_all_pages(url):
 
 def get_usernames(data):
     """
-    Recebe uma lista de dicionários de usuários do GitHub
-    e retorna um conjunto com os logins (nomes de usuário).
+    Extrai os nomes de usuário (login) de uma lista de dicionários de usuários.
+
+    Parâmetros:
+        data (list): Lista de dicionários retornados pela API do GitHub.
+
+    Retorna:
+        set: Conjunto com os nomes de usuário (strings) únicos.
     """
     return {user["login"] for user in data}
 
