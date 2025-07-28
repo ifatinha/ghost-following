@@ -1,3 +1,19 @@
+"""
+ghost_following.py
+
+Ferramenta de linha de comando que identifica quais usuários do GitHub que você segue
+não te seguem de volta. Usa a API pública do GitHub, sem necessidade de autenticação.
+
+Funcionalidades:
+- Coleta seguidores e seguidos via API REST.
+- Lida automaticamente com paginação de resultados.
+- Exibe, no terminal, os usuários que não te seguem de volta.
+
+Limitações:
+- Limite de 60 requisições por hora (API sem token).
+- Exige conexão com a internet.
+"""
+
 # ghost_following.py
 import requests
 
