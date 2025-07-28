@@ -133,3 +133,14 @@ def export_to_csv(usernames, filename="data/ghost_following.csv"):
 
 if __name__ == "__main__":
     main()
+
+
+# Exportar resultado para CSV
+
+# Autenticação com token
+
+# Interface Web (Flask ou HTML estático)
+
+# Testes unitários
+
+# Deploy
