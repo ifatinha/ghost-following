@@ -33,6 +33,19 @@ def get_usernames(data):
 
 # Função principal do script
 def main():
+    """
+    Executa o script principal para analisar seguidores no GitHub.
+
+    Passos:
+    1. Solicita ao usuário seu nome de usuário do GitHub.
+    2. Busca a lista de usuários que ele segue.
+    3. Busca a lista de usuários que o seguem.
+    4. Compara as listas e identifica quem não o segue de volta.
+    5. Exibe o resultado no terminal.
+
+    Requer conexão com a internet e depende da API pública do GitHub.
+    Limite de 60 requisições por hora sem autenticação.
+    """
     print("👻 Ghost Following - Descubra quem não te segue de volta no GitHub\n")
 
     # Solicita o nome de usuário
