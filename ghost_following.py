@@ -16,6 +16,8 @@ Limitações:
 
 # ghost_following.py
 import requests
+import csv
+import os
 
 # Função auxiliar para lidar com a paginação da API do GitHub
 
@@ -104,6 +106,29 @@ def main():
         print("👥 Usuários que você segue mas que **não te seguem de volta**:\n")
         for user in sorted(not_following_back):
             print(f" - {user}")
+        export_to_csv(not_following_back)
+
+
+def export_to_csv(usernames, filename="data/ghost_following.csv"):
+    """
+    Exporta uma lista ou conjunto de nomes de usuários para um arquivo CSV.
+
+    Parâmetros:
+        usernames (iterável): Conjunto ou lista de logins do GitHub.
+        filename (str): Caminho do arquivo CSV a ser criado.
+    """
+
+    # Garante que o diretório data existe
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+    # Escreve o arquivo CSV
+    with open(filename, mode="w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Usuários que não te seguem de volta"])  # Cabeçalho
+        for user in usernames:
+            writer.writerow([user])
+
+    print(f"\n📁 Resultado exportado para: {filename}")
 
 
 if __name__ == "__main__":
