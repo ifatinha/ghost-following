@@ -48,3 +48,4 @@ python ghost-following.py
 ```
 
 Digite seu nome de usuário do GitHub quando solicitado e aguarde o resultado.
+
