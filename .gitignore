@@ -1,0 +1,27 @@
+# Arquivos Python compilados
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Arquivos temporários e de backup
+*.log
+*.tmp
+*.bak
+
+# Configurações de ambiente e IDEs
+.env
+.vscode/
+.idea/
+
+# Dados gerados
+data/*
+!data/.gitkeep
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de cache web
+web/.DS_Store
+web/node_modules/
