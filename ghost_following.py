@@ -15,14 +15,15 @@ Limitações:
 """
 
 # ghost_following.py
-import requests
 import csv
 import os
+import requests
+
 
 # Função auxiliar para lidar com a paginação da API do GitHub
 
 
-def get_all_pages(url):
+def get_all_pages(url, token=None):
     """
     Coleta todos os resultados de uma URL paginada da API do GitHub.
 
@@ -39,7 +40,7 @@ def get_all_pages(url):
     results = []
 
     while url:
-        response = requests.get(url, timeout=30)
+        response = make_authenticated_request(url, token)
         response.raise_for_status()  # Interrompe se a requisição falhar.
         results.extend(response.json())  # Adiciona os dados da página atual
         # Verifica se a uma próxima página na resposta
@@ -79,6 +80,9 @@ def main():
     """
     print("👻 Ghost Following - Descubra quem não te segue de volta no GitHub\n")
 
+    # Solicita o token de usuário
+    token = input("🔐 (Opcional) Cole seu token do GitHub para evitar limite de requisições [ou pressione Enter]: ").strip() or None
+
     # Solicita o nome de usuário
     username = input("Digite seu nome de usuário do Github: ").strip()
 
@@ -87,10 +91,10 @@ def main():
     followers_url = f"https://api.github.com/users/{username}/followers?per_page=100"
 
     print("\n🔎 Buscando usuários que você segue...")
-    following_data = get_all_pages(following_url)
+    following_data = get_all_pages(following_url, token)
 
     print("🔎 Buscando seus seguidores...")
-    followers_data = get_all_pages(followers_url)
+    followers_data = get_all_pages(followers_url, token)
 
     # Conjuntos de logins para comparação
     following = get_usernames(following_data)
@@ -131,11 +135,30 @@ def export_to_csv(usernames, filename="data/ghost_following.csv"):
     print(f"\n📁 Resultado exportado para: {filename}")
 
 
+def make_authenticated_request(url, token=None):
+    """
+    Faz uma requisição GET à API do GitHub com ou sem token.
+
+    Parâmetros:
+        url (str): URL da API do GitHub.
+        token (str): Token pessoal de acesso (opcional).
+
+    Retorna:
+        requests.Response: Objeto de resposta da requisição.
+    """
+
+    headers = []
+    if token:
+        headers["Authorization"] = f"token {token}"
+
+    response = requests.get(url, headers=headers, timeout=30)
+    response.raise_for_status()
+    return response
+
+
 if __name__ == "__main__":
     main()
 
-
-# Exportar resultado para CSV
 
 # Autenticação com token
 
