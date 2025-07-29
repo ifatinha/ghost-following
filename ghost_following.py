@@ -18,7 +18,7 @@ Limitações:
 import csv
 import os
 import requests
-
+from dotenv import load_dotenv
 
 # Função auxiliar para lidar com a paginação da API do GitHub
 
@@ -81,6 +81,8 @@ def main():
     print("👻 Ghost Following - Descubra quem não te segue de volta no GitHub\n")
 
     # Solicita o token de usuário
+    load_dotenv()
+    token = os.getenv("GITHUB_TOKEN")
     token = input("🔐 (Opcional) Cole seu token do GitHub para evitar limite de requisições [ou pressione Enter]: ").strip() or None
 
     # Solicita o nome de usuário
@@ -159,8 +161,6 @@ def make_authenticated_request(url, token=None):
 if __name__ == "__main__":
     main()
 
-
-# Autenticação com token
 
 # Interface Web (Flask ou HTML estático)
 

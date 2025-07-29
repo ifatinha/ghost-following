@@ -25,3 +25,6 @@ Thumbs.db
 # Arquivos de cache web
 web/.DS_Store
 web/node_modules/
+
+# Arquivos de segurança
+.env
