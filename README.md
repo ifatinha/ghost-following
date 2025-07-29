@@ -48,8 +48,10 @@ Este script usa a [API pública do GitHub](https://docs.github.com/pt/rest) para
 
 # Crie e ative um ambiente virtual (opcional)
 
+```
 python -m venv venv
 venv\Scripts\activate # no Windows
+```
 
 # Instale as dependências
 
@@ -80,8 +82,10 @@ python ghost_following.py
 ---
 
 ## 📄 Licença
+
 Este projeto está licenciado sob os termos da MIT License.
 
 ## ✨ Autor
+
 Feito com dedicação por ifatinha 🧠💻
 [`ifatinha`](https://github.com/ifatinha)
