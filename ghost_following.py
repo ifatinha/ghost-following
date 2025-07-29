@@ -20,34 +20,74 @@ import os
 import requests
 from dotenv import load_dotenv
 
-# Função auxiliar para lidar com a paginação da API do GitHub
+# ───────────────────────────────────────────────────────────────
+# 👇 1. Carrega variáveis do arquivo .env (como o token do GitHub)
+# ───────────────────────────────────────────────────────────────
+load_dotenv()
+
+# ───────────────────────────────────────────────────────────────
+# 👇 2. Recupera o token do ambiente (ou pede via input, se ausente)
+# ───────────────────────────────────────────────────────────────
+token = os.getenv("GITHUB_TOKEN")
+if not token:
+    token = input("🔐 Cole seu token do GitHub [ou pressione Enter para seguir anônimo]: ").strip() or None
+
+# ───────────────────────────────────────────────────────────────
+# 👇 3. Função para fazer requisições com ou sem autenticação
+# ───────────────────────────────────────────────────────────────
+
+
+def make_authenticated_request(url, token=None):
+    """
+    Faz uma requisição GET à API do GitHub com autenticação opcional.
+
+    Parâmetros:
+        url (str): URL da API do GitHub.
+        token (str): Token pessoal (opcional).
+
+    Retorno:
+        requests.Response: Objeto com os dados da resposta.
+    """
+
+    # Dicionário para evitar cabeçalhos HTTP
+    headers = {}
+    if token:
+        # Autenticação via token
+        headers["Authorization"] = f"token {token}"
+
+    response = requests.get(url, headers=headers, timeout=30)
+    response.raise_for_status()
+    return response
+
+# ───────────────────────────────────────────────────────────────
+# 👇 4. Função para coletar todos os dados paginados da API
+# ───────────────────────────────────────────────────────────────
 
 
 def get_all_pages(url, token=None):
     """
-    Coleta todos os resultados de uma URL paginada da API do GitHub.
-
-    A API do GitHub retorna no máximo 100 itens por página.
-    Esta função segue os links de paginação (se houver) para obter todos os dados.
-
-    Parâmetros:
-        url (str): A URL inicial da requisição (com `?per_page=100` já incluso).
+    Percorre todas as páginas de uma API do GitHub que usa paginação.
 
     Retorna:
-        list: Lista de dicionários representando os usuários retornados pela API.
+        list: Lista com todos os resultados acumulados.
     """
 
     results = []
 
     while url:
         response = make_authenticated_request(url, token)
-        response.raise_for_status()  # Interrompe se a requisição falhar.
-        results.extend(response.json())  # Adiciona os dados da página atual
+        # Interrompe se a requisição falhar.
+        response.raise_for_status()
+        # Adiciona os dados da página atual
+        results.extend(response.json())
         # Verifica se a uma próxima página na resposta
         url = response.links.get("next", {}).get(url)
     return results
 
-# Extrai apenas os nomes de usuário (login) de cada item retornado pela API
+
+# ───────────────────────────────────────────────────────────────
+# 👇 5. Extrai  os nomes de usuário (login) de cada item retornado pela API
+# ───────────────────────────────────────────────────────────────
 
 
 def get_usernames(data):
@@ -62,57 +102,9 @@ def get_usernames(data):
     """
     return {user["login"] for user in data}
 
-
-# Função principal do script
-def main():
-    """
-    Executa o script principal para analisar seguidores no GitHub.
-
-    Passos:
-    1. Solicita ao usuário seu nome de usuário do GitHub.
-    2. Busca a lista de usuários que ele segue.
-    3. Busca a lista de usuários que o seguem.
-    4. Compara as listas e identifica quem não o segue de volta.
-    5. Exibe o resultado no terminal.
-
-    Requer conexão com a internet e depende da API pública do GitHub.
-    Limite de 60 requisições por hora sem autenticação.
-    """
-    print("👻 Ghost Following - Descubra quem não te segue de volta no GitHub\n")
-
-    # Solicita o token de usuário
-    load_dotenv()
-    token = os.getenv("GITHUB_TOKEN")
-    token = input("🔐 (Opcional) Cole seu token do GitHub para evitar limite de requisições [ou pressione Enter]: ").strip() or None
-
-    # Solicita o nome de usuário
-    username = input("Digite seu nome de usuário do Github: ").strip()
-
-    # Monta as URLs para buscar os dados da API
-    following_url = f"https://api.github.com/users/{username}/following?per_page=100"
-    followers_url = f"https://api.github.com/users/{username}/followers?per_page=100"
-
-    print("\n🔎 Buscando usuários que você segue...")
-    following_data = get_all_pages(following_url, token)
-
-    print("🔎 Buscando seus seguidores...")
-    followers_data = get_all_pages(followers_url, token)
-
-    # Conjuntos de logins para comparação
-    following = get_usernames(following_data)
-    followers = get_usernames(followers_data)
-
-    # Diferença entre conjuntos: quem você segue mas não te segue
-    not_following_back = following - followers
-
-    print("\n📋 Resultado:")
-    if not not_following_back:
-        print("🎉 Todos os usuários que você segue também te seguem de volta!")
-    else:
-        print("👥 Usuários que você segue mas que **não te seguem de volta**:\n")
-        for user in sorted(not_following_back):
-            print(f" - {user}")
-        export_to_csv(not_following_back)
+# ─────────────────────────────────────────────────────────
+# 👇 Exporta para CSV
+# ─────────────────────────────────────────────────────────
 
 
 def export_to_csv(usernames, filename="data/ghost_following.csv"):
@@ -130,34 +122,67 @@ def export_to_csv(usernames, filename="data/ghost_following.csv"):
     # Escreve o arquivo CSV
     with open(filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(["Usuários que não te seguem de volta"])  # Cabeçalho
+        writer.writerow(["Usuarios que você segue, mas que não te seguem de volta"])  # Cabeçalho
         for user in usernames:
             writer.writerow([user])
 
     print(f"\n📁 Resultado exportado para: {filename}")
 
 
-def make_authenticated_request(url, token=None):
+# ───────────────────────────────────────────────────────────────
+# 👇 7. Função principal
+# ───────────────────────────────────────────────────────────────
+def main():
     """
-    Faz uma requisição GET à API do GitHub com ou sem token.
+    Executa o script principal para analisar seguidores no GitHub.
 
-    Parâmetros:
-        url (str): URL da API do GitHub.
-        token (str): Token pessoal de acesso (opcional).
+    Passos:
+    1. Solicita ao usuário seu nome de usuário do GitHub.
+    2. Busca a lista de usuários que ele segue.
+    3. Busca a lista de usuários que o seguem.
+    4. Compara as listas e identifica quem não o segue de volta.
+    5. Exibe o resultado no terminal.
 
-    Retorna:
-        requests.Response: Objeto de resposta da requisição.
+    Requer conexão com a internet e depende da API pública do GitHub.
+    Limite de 60 requisições por hora sem autenticação.
     """
+    print("👻 Ghost Following - Descubra quem não te segue de volta no GitHub\n")
 
-    headers = {}
-    if token:
-        headers["Authorization"] = f"token {token}"
+    # Solicita o nome de usuário
+    username = input("👤 Informe seu nome de usuário do GitHub: ").strip()
 
-    response = requests.get(url, headers=headers, timeout=30)
-    response.raise_for_status()
-    return response
+    # Monta as URLs para buscar os dados da API
+    following_url = f"https://api.github.com/users/{username}/following?per_page=100"
+    followers_url = f"https://api.github.com/users/{username}/followers?per_page=100"
+
+    print("📥 Buscando seguidores...")
+    followers_data = get_all_pages(followers_url, token)
+    print(f"✅ {len(followers_data)} seguidores encontrados.")
+
+    print("📤 Buscando usuários que você segue...")
+    following_data = get_all_pages(following_url, token)
+    print(f"✅ {len(following_data)} usuários sendo seguidos.")
+
+    # Conjuntos de logins para comparação
+    following = get_usernames(following_data)
+    followers = get_usernames(followers_data)
+
+    # Identifica quem você segue mas não te segue de volta
+    not_following_back = following - followers
+
+    print(f"\n🚨 {len(not_following_back)} usuários não te seguem de volta:\n")
+    if not not_following_back:
+        print("🎉 Todos os usuários que você segue também te seguem de volta!")
+    else:
+        print("👥 Usuários que você segue mas que **não te seguem de volta**:\n")
+        for user in sorted(not_following_back):
+            print(f" - {user}")
+        export_to_csv(not_following_back)
 
 
+# ───────────────────────────────────────────────────────────────
+# 👇 Execução do script
+# ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     main()
 

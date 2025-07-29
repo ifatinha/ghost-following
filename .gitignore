@@ -28,3 +28,4 @@ web/node_modules/
 
 # Arquivos de segurança
 .env
+.ghost_following.csv
