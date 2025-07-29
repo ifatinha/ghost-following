@@ -147,7 +147,7 @@ def make_authenticated_request(url, token=None):
         requests.Response: Objeto de resposta da requisição.
     """
 
-    headers = []
+    headers = {}
     if token:
         headers["Authorization"] = f"token {token}"
 
