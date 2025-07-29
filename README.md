@@ -10,42 +10,78 @@
 
 # 👻 ghost-following
 
-Verifique quem você segue no GitHub, mas que não te segue de volta — em segundos.
-
-Este script usa a API pública do GitHub para identificar os _"ghost followers"_, ou seja, usuários que você segue, mas que **não te seguem de volta**.
+Verifique rapidamente quais usuários do GitHub você segue **mas que não te seguem de volta**.
 
 ---
 
-## 🔧 Funcionalidades
+## 📌 O que este projeto faz?
 
-- Lista todos os usuários que você segue no GitHub
-- Lista todos os seus seguidores
-- Compara as listas e identifica quem **não te segue de volta**
-- Suporte a paginação automática da API do GitHub
-- Roda diretamente no terminal, sem necessidade de login (modo público)
+Este script usa a [API pública do GitHub](https://docs.github.com/pt/rest) para:
+
+- buscar quem você segue (`following`)
+- buscar seus seguidores (`followers`)
+- listar quem **não te segue de volta**
+- salvar o resultado em um arquivo CSV
 
 ---
 
-## ▶️ Como usar
+## ⚙️ Requisitos
 
-### 1. Instale o Python (caso ainda não tenha)
+- Python 3.10+
+- Biblioteca [`python-dotenv`](https://pypi.org/project/python-dotenv/)
+- Conexão com a internet
+- Token pessoal do GitHub (opcional, mas recomendado)
 
-Acesse [https://www.python.org](https://www.python.org) e instale o Python.  
-⚠️ Marque a opção **"Add Python to PATH"** na instalação.
+---
 
-### 2. Instale as dependências
+## 🧪 Instalação
 
-Abra o terminal e rode:
+    ```bash
+    # Clone o repositório
 
-```bash
-pip install requests
+    git clone https://github.com/ifatinha/ghost-following.git
+    cd ghost-following
+
+    ```
+
+---
+
+# Crie e ative um ambiente virtual (opcional)
+
+python -m venv venv
+venv\Scripts\activate # no Windows
+
+# Instale as dependências
+
+pip install -r requirements.txt
+
+---
+
+## 🔐 Configurando o token (opcional)
+
+Crie um arquivo .env na raiz do projeto com:
+
+```
+GITHUB_TOKEN=ghp_seu_token_aqui
 ```
 
-### 3. Execute o script
+Você pode criar um token [`neste link`](https://github.com/settings/tokens) com o escopo "public_repo".
 
-```bash
-python ghost-following.py
+Usar o token evita limites baixos de requisições da API.
+
+---
+
+## 🚀 Como usar
+
+```
+python ghost_following.py
 ```
 
-Digite seu nome de usuário do GitHub quando solicitado e aguarde o resultado.
+---
 
+## 📄 Licença
+Este projeto está licenciado sob os termos da MIT License.
+
+## ✨ Autor
+Feito com dedicação por ifatinha 🧠💻
+[`ifatinha`](https://github.com/ifatinha)
