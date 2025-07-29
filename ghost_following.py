@@ -103,7 +103,7 @@ def get_usernames(data):
     return {user["login"] for user in data}
 
 # ─────────────────────────────────────────────────────────
-# 👇 Exporta para CSV
+# 👇 6. Exporta para CSV
 # ─────────────────────────────────────────────────────────
 
 
@@ -128,10 +128,32 @@ def export_to_csv(usernames, filename="data/ghost_following.csv"):
 
     print(f"\n📁 Resultado exportado para: {filename}")
 
+# ─────────────────────────────────────────────────────────
+# 👇 7. Verifica a diferença entre seguidores e seguindo
+# ─────────────────────────────────────────────────────────
+
+
+def difference_list(following, followers):
+    """
+    Compara duas listas e retorna os elementos que estão em lista1 mas não estão em lista2.
+
+    Útil para identificar, por exemplo, quem você segue no GitHub, mas não te segue de volta.
+
+    Args:
+        lista1 (list): Lista base (ex: usuários que você segue).
+        lista2 (list): Lista de comparação (ex: usuários que te seguem).
+
+    Returns:
+        list: Itens presentes em lista1 que não estão em lista2.
+    """
+
+    return list(set(following) - set(followers))
 
 # ───────────────────────────────────────────────────────────────
-# 👇 7. Função principal
+# 👇 8. Função principal
 # ───────────────────────────────────────────────────────────────
+
+
 def main():
     """
     Executa o script principal para analisar seguidores no GitHub.
