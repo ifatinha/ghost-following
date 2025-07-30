@@ -81,7 +81,7 @@ def get_all_pages(url, token=None):
         # Adiciona os dados da página atual
         results.extend(response.json())
         # Verifica se a uma próxima página na resposta
-        url = response.links.get("next", {}).get(url)
+        url = response.links.get("next", {}).get("url")
     return results
 
 
