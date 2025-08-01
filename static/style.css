@@ -1,0 +1,185 @@
+/* Reset básico */
+* {
+    margin    : 0;
+    padding   : 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family     : 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color           : #f1f1f1;
+    min-height      : 100vh;
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+}
+
+.container {
+    max-width       : 600px;
+    width           : 90%;
+    padding         : 2rem;
+    background-color: #1e1e1e;
+    border-radius   : 12px;
+    box-shadow      : 0 0 20px rgba(0, 255, 255, 0.05);
+}
+
+header {
+    text-align   : center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size    : 2rem;
+    margin-bottom: 0.5rem;
+    color        : #00ffc3;
+}
+
+header p {
+    font-size: 1rem;
+    color    : #ccc;
+}
+
+#user-list ul {
+    list-style   : none;
+    padding      : 0;
+    margin-bottom: 2rem;
+}
+
+#user-list li {
+    background-color: #2a2a2a;
+    padding         : 0.75rem 1rem;
+    margin-bottom   : 0.5rem;
+    border-radius   : 6px;
+    transition      : background 0.3s ease;
+}
+
+#user-list li:hover {
+    background-color: #333;
+}
+
+#user-list .empty {
+    color     : #ff5555;
+    font-style: italic;
+}
+
+form {
+    margin-bottom: 2rem;
+}
+
+input[type="text"] {
+    padding         : 0.7rem;
+    width           : 80%;
+    border          : none;
+    border-radius   : 8px;
+    margin-bottom   : 1rem;
+    background-color: #2c2c2c;
+    color           : #fff;
+}
+
+button {
+    padding         : 0.7rem 1.5rem;
+    background-color: #00cec9;
+    border          : none;
+    border-radius   : 8px;
+    color           : #000;
+    font-weight     : bold;
+    cursor          : pointer;
+    transition      : background-color 0.3s;
+}
+
+button:hover {
+    background-color: #00b894;
+}
+
+footer {
+    text-align: center;
+}
+
+footer button {
+    padding         : 0.6rem 1.5rem;
+    background-color: #00ffc3;
+    color           : #000;
+    border          : none;
+    border-radius   : 8px;
+    font-weight     : bold;
+    cursor          : pointer;
+    transition      : background 0.3s ease;
+    margin-bottom   : 1rem;
+}
+
+footer button:hover {
+    background-color: #00d6a4;
+}
+
+footer p {
+    font-size: 0.85rem;
+    color    : #888;
+}
+
+/* Loader overlay */
+#loading-overlay {
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    width           : 100%;
+    height          : 100%;
+    background-color: rgba(18, 18, 18, 0.95);
+    color           : #fff;
+    display         : flex;
+    flex-direction  : column;
+    justify-content : center;
+    align-items     : center;
+    z-index         : 9999;
+    font-size       : 1.2rem;
+}
+
+#loading-overlay.hidden {
+    display: none;
+}
+
+/* Spinner animation */
+.spinner {
+    border       : 4px solid #2c2c2c;
+    border-top   : 4px solid #00cec9;
+    border-radius: 50%;
+    width        : 40px;
+    height       : 40px;
+    animation    : spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.result-message.success {
+    background-color: #1f2937;
+    /* cinza escuro (modo dark) */
+    color           : #10b981;
+    /* verde suave */
+    margin-bottom   : 2rem;
+    padding         : 1.5rem;
+    border-radius   : 8px;
+    text-align      : center;
+    box-shadow      : 0 0 10px rgba(16, 185, 129, 0.2);
+}
+
+.fade-in {
+    opacity  : 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity  : 1;
+        transform: translateY(0);
+    }
+}

@@ -3,7 +3,7 @@ Testes para o módulo ghost_following.py - Funções de comparação de listas d
 """
 
 import unittest
-from ghost_following import difference_list
+from util.ghost_following import difference_list
 
 
 class TestDifferenceList(unittest.TestCase):

@@ -18,7 +18,7 @@ de autenticação e comunicação com a API do GitHub.
 import unittest
 from unittest.mock import patch, Mock
 import requests
-from ghost_following import make_authenticated_request
+from util.ghost_following import make_authenticated_request
 
 
 class TestMakeAuthenticatedRequest(unittest.TestCase):

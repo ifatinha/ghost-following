@@ -154,7 +154,7 @@ def difference_list(following, followers):
 # ───────────────────────────────────────────────────────────────
 
 
-def main():
+def get_ghost_following(username):
     """
     Executa o script principal para analisar seguidores no GitHub.
 
@@ -168,10 +168,10 @@ def main():
     Requer conexão com a internet e depende da API pública do GitHub.
     Limite de 60 requisições por hora sem autenticação.
     """
-    print("👻 Ghost Following - Descubra quem não te segue de volta no GitHub\n")
+    # print("👻 Ghost Following - Descubra quem não te segue de volta no GitHub\n")
 
     # Solicita o nome de usuário
-    username = input("👤 Informe seu nome de usuário do GitHub: ").strip()
+    # username = input("👤 Informe seu nome de usuário do GitHub: ").strip()
 
     # Monta as URLs para buscar os dados da API
     following_url = f"https://api.github.com/users/{username}/following?per_page=100"
@@ -191,26 +191,5 @@ def main():
 
     # Identifica quem você segue mas não te segue de volta
     not_following_back = following - followers
-
-    print(f"\n🚨 {len(not_following_back)} usuários não te seguem de volta:\n")
-    if not not_following_back:
-        print("🎉 Todos os usuários que você segue também te seguem de volta!")
-    else:
-        print("👥 Usuários que você segue mas que **não te seguem de volta**:\n")
-        for user in sorted(not_following_back):
-            print(f" - {user}")
-        export_to_csv(not_following_back)
-
-
-# ───────────────────────────────────────────────────────────────
-# 👇 Execução do script
-# ───────────────────────────────────────────────────────────────
-if __name__ == "__main__":
-    main()
-
-
-# Interface Web (Flask ou HTML estático)
-
-# Testes unitários
-
-# Deploy
+   
+    return not_following_back

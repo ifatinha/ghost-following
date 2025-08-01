@@ -5,7 +5,7 @@ Testes para a função export_to_csv do módulo ghost_following.
 import os
 import csv
 import unittest
-from ghost_following import export_to_csv
+from util.ghost_following import export_to_csv
 
 
 class TestExportCSV(unittest.TestCase):

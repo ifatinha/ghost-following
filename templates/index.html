@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ghost Following</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>👻 Ghost Following</h1>
+            <p>Usuários que você segue, mas que não te seguem de volta no GitHub.</p>
+        </header>
+
+        <form method="POST" action="/">
+            <input type="text" name="username" placeholder="Digite seu nome de usuário do GitHub" required>
+            <button type="submit">Buscar</button>
+        </form>
+
+        <section id="user-list">
+            {% if searched %}
+                {% if usernames %}
+                <ul id="ghost-users fade-in">
+                    {% for user in usernames %}
+                        <li>{{user}}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="result-message success fade-in">
+                    <h2>Missão cumprida! 🕵️‍♀️</h2>
+                    <p>Você não tem ninguém te seguindo às escondidas. Relacionamentos 100% recíprocos!</p>
+                </div>
+                {% endif %}
+            {% endif %}
+        </section>
+
+        <footer>
+            <button onclick="window.location.href='data/ghost_following.csv'">
+                ⬇️ Baixar CSV
+            </button>
+            <p>&copy; 2025 Ghost Following</p>
+        </footer>
+    </div>
+
+    <div id="loading-overlay" class="hidden">
+        <div class="spinner"></div>
+        <p>Buscando dados no GitHub...</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

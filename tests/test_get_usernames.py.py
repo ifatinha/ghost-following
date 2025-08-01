@@ -3,7 +3,7 @@ Testes para a função get_usernames do módulo ghost_following.
 """
 
 import unittest
-from ghost_following import get_usernames
+from util.ghost_following import get_usernames
 
 
 class TestGetUsernames(unittest.TestCase):

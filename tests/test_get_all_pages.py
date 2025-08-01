@@ -13,7 +13,7 @@ Testes realizados:
 
 import unittest
 from unittest.mock import patch, MagicMock
-from ghost_following import get_all_pages
+from util.ghost_following import get_all_pages
 
 
 class TestGetAllPage(unittest.TestCase):
