@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 from util.ghost_following import get_ghost_following, export_to_csv
 
 
@@ -23,6 +23,12 @@ def index():
 
     # Passa os dados para o HTML
     return render_template("index.html", usernames=usernames, searched=False)
+
+
+@app.route('/download')
+def download_csv():
+    file_path = "data/ghost_following.csv"
+    return send_file(file_path, as_attachment=True)
 
 
 if __name__ == "__main__":

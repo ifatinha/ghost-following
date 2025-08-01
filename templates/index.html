@@ -38,10 +38,12 @@
         </section>
 
         <footer>
-            <button onclick="window.location.href='data/ghost_following.csv'">
-                ⬇️ Baixar CSV
-            </button>
-            <p>&copy; 2025 Ghost Following</p>
+            {% if usernames %}
+                <button onclick="{{ url_for('download_csv') }}">
+                    ⬇️ Baixar CSV
+                </button>
+                <p>&copy; 2025 Ghost Following</p>
+            {% endif %}
         </footer>
     </div>
 
